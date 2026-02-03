@@ -1,0 +1,14 @@
+#!/bin/bash
+
+GIT=$(which git)
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $(basename $0) <file>"
+    echo "Remove file from git history."
+    exit 1
+fi
+
+FILE=$1
+
+${GIT} filter-branch --force --index-filter "git rm -r --cached --ignore-unmatch ${FILE}"
+

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+FFMPEG=$(which ffmpeg)
+DEFAULT_FRAMERATE=30
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $(basename $0) <video> [<framerate> (Default: ${DEFAULT_FRAMERATE})]"
+    echo "Change video framerate"
+    exit 1
+fi
+
+VIDEO=$1
+FRAMERATE=${2:-${DEFAULT_FRAMERATE}}
+
+${FFMPEG} -i "${VIDEO}" -r ${FRAMERATE} "converted_${VIDEO}"
+

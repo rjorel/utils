@@ -1,0 +1,25 @@
+#!/bin/bash
+
+GIT=$(which git)
+
+if [ $# -lt 3 ]; then
+    echo "Usage: $(basename $0) <current-email> <new-name> <new-email>"
+    echo "Rename author/committer of commits."
+    exit 1
+fi
+
+CURRENT_EMAIL=$1
+NEW_NAME=$2
+NEW_EMAIL=$3
+
+${GIT} filter-branch --force --env-filter "
+    if [ \"\$GIT_COMMITTER_EMAIL\" = \"${CURRENT_EMAIL}\" ]; then
+        export GIT_COMMITTER_NAME=\"${NEW_NAME}\"
+        export GIT_COMMITTER_EMAIL=\"${NEW_EMAIL}\"
+    fi
+    if [ \"\$GIT_AUTHOR_EMAIL\" = \"${CURRENT_EMAIL}\" ]; then 
+        export GIT_AUTHOR_NAME=\"${NEW_NAME}\"
+        export GIT_AUTHOR_EMAIL=\"${NEW_EMAIL}\"
+    fi
+" --tag-name-filter cat -- --branches --tags
+

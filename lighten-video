@@ -1,0 +1,14 @@
+#!/bin/bash
+
+FFMPEG=$(which ffmpeg)
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $(basename $0) VIDEO"
+    echo "Lighten video"
+    exit 1
+fi
+
+VIDEO=$1
+
+${FFMPEG} -i "${VIDEO}" "lightened_${VIDEO}"
+

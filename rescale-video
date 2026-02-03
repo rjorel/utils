@@ -1,0 +1,15 @@
+#!/bin/bash
+
+FFMPEG=$(which ffmpeg)
+
+if [ $# -lt 2 ]; then
+    echo "Usage: $(basename $0) VIDEO WIDTH"
+    echo "Change video scale"
+    exit 1
+fi
+
+VIDEO=$1
+WIDTH=$2
+
+${FFMPEG} -i "${VIDEO}" -vf scale=${WIDTH}:-1 "rescaled_${WIDTH}_${VIDEO}"
+

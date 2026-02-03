@@ -1,0 +1,21 @@
+#!/bin/bash
+
+FFMPEG=$(which ffmpeg)
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $(basename $0) <video> [<fps>]"
+    echo "Make GIF from video."
+    exit 1
+fi
+
+VIDEO=$1
+FPS=${2:-15}
+
+PALETTE=palette_${VIDEO}.png
+OUTPUT=${VIDEO}.gif
+
+${FFMPEG} -i ${VIDEO} -filter_complex "[0:v] palettegen" ${PALETTE}
+${FFMPEG} -i "${VIDEO}" -i ${PALETTE} -filter_complex "[0:v][1:v] paletteuse" -r ${FPS} "${OUTPUT}"
+
+rm ${PALETTE}
+

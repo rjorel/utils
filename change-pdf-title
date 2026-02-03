@@ -1,0 +1,14 @@
+#!/bin/bash
+
+EXIFTOOL=$(which exiftool)
+
+if [ $# -lt 2 ]; then
+    echo "Usage: $(basename $0) <pdf-file> <title>"
+    exit 1
+fi
+
+PDF_FILE_PATH=$1
+TITLE=$2
+
+${EXIFTOOL} -Title="${TITLE}" ${PDF_FILE_PATH}
+

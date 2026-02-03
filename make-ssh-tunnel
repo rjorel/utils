@@ -1,0 +1,24 @@
+#!/bin/bash
+
+SSH=$(which ssh)
+
+if [ $# -lt 3 ]; then
+    echo "Usage: $(basename $0) <ssh-host> <local-port> <remote-target-port> [<local-address>] [<remote-target-address>]"
+    echo "Establish SSH tunnel"
+    exit 1
+fi
+
+SSH_HOST=$1
+LOCAL_PORT=$2
+REMOTE_TARGET_PORT=$3
+
+LOCAL_ADDRESS=${4:-127.0.0.1}
+REMOTE_TARGET_ADDRESS=${5:-127.0.0.1}
+
+CMD="${SSH} -N -L ${LOCAL_ADDRESS}:${LOCAL_PORT}:${REMOTE_TARGET_ADDRESS}:${REMOTE_TARGET_PORT} ${SSH_HOST}"
+
+echo "Establishing SSH tunnel"
+echo ${CMD}
+
+${CMD}
+

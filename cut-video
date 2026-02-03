@@ -1,0 +1,32 @@
+#!/bin/bash
+
+FFMPEG=$(which ffmpeg)
+
+usage() {
+    echo "Usage: $(basename $0) [-s <start>] [-e <end>] [-c] <video>"
+    echo "Cut video from start to end (copy codec if asked with -c)"
+    exit 1
+}
+
+if [ $# -lt 1 ]; then
+    usage
+fi
+
+ARGS=
+
+while getopts "s:e:c" arg; do
+  case "${arg}" in
+    s) ARGS="${ARGS} -ss ${OPTARG}" ;;
+    e) ARGS="${ARGS} -to ${OPTARG}" ;;
+    c) ARGS="${ARGS} -codec copy" ;;
+    ?) usage ;;
+  esac
+done
+
+# Remove options that have already been handled from $@.
+shift $((OPTIND -1))
+
+VIDEO=$1
+
+${FFMPEG} -i "${VIDEO}" ${ARGS} "cut_${VIDEO}" 
+

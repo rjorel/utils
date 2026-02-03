@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+
+import os
+import re
+import sys
+import argparse
+
+from PIL import Image
+
+
+def remove_duplicates(text, char):
+    regex = r'{}+'.format(char)
+    replacement = char
+
+    return re.sub(regex, replacement, text)
+
+
+parser = argparse.ArgumentParser(description='Resize images according longest image side');
+
+parser.add_argument('-s', '--size', dest='size', default=3000, type=int, help='Desired side size (default: 3000)')
+(args, files) = parser.parse_known_args();
+
+for file in files:
+    try:
+        image = Image.open(file)
+    except OSError:
+        print('An error occurred while opening "{}"'.format(file), file=sys.stderr)
+        continue
+
+    if image.width <= args.size and image.height <= args.size:
+        continue
+
+    if image.width > image.height:
+        ratio = args.size / image.width
+    else:
+        ratio = args.size / image.height
+
+    width = int(image.width * ratio)
+    height = int(image.height * ratio)
+
+    image = image.resize((width, height), Image.LANCZOS)
+    image.save(file, exif=image.info['exif'] if 'exif' in image.info else b'')
+
+    print('Rescaled:', file)
+

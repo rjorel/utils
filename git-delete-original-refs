@@ -1,0 +1,8 @@
+#!/bin/bash
+
+GIT=$(which git)
+
+for ref in $(${GIT} show-ref | grep original | awk '{ print $2 }'); do
+    ${GIT} update-ref -d $ref;
+done
+

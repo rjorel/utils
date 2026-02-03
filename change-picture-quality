@@ -1,0 +1,15 @@
+#!/bin/bash
+
+CONVERT=$(which convert)
+DEFAULT_QUALITY=90
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $(basename $0) <image> [<quality> (Default: ${DEFAULT_QUALITY})]"
+    exit 1
+fi
+
+IMAGE=$1
+QUALITY=${2:-${DEFAULT_QUALITY}}
+
+${CONVERT} -quality ${QUALITY} "${IMAGE}" "${IMAGE}"
+

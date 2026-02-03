@@ -1,0 +1,16 @@
+#!/bin/bash
+
+GIT=$(which git)
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $(basename $0) <repository> [<branch>]"
+    echo "Merge given repository to current one."
+    exit 1
+fi
+
+BRANCH=${2:-master}
+
+${GIT} remote add -f other-repository $1
+${GIT} merge other-repository/${BRANCH} --allow-unrelated-histories
+${GIT} remote remove other-repository
+
