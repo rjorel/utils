@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PDFTK=$(which pdftk)
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $(basename $0) <output-pdf-file> [<*pdf-files>]"
+    exit 1
+fi
+
+PDF_FILE_PATH=$1
+
+${PDFTK} "${@:2}" output "${PDF_FILE_PATH}"
+
