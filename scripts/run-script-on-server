@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+    echo "Usage: $(basename $0) <ssh-host> <script-path>"
+    exit 1
+fi
+
+SSH_HOST=$1
+SCRIPT_PATH=$2
+
+ssh ${SSH_HOST} "sh -s" < ${SCRIPT_PATH}
+
